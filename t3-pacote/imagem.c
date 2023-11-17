@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* DOIS TIPOS PARA MANIPULAÇÃO DE ARQUIVOS BMP                                */
+/* DOIS TIPOS PARA MANIPULAï¿½ï¿½O DE ARQUIVOS BMP                                */
 /*----------------------------------------------------------------------------*/
 /* Autor: Bogdan T. Nassu                                                     */
 /*============================================================================*/
-/** Este arquivo traz declarações para dois tipos e rotinas para manipulação de
- * arquivos bmp. Como temos um propósito puramente didático, apenas um sub-
- * conjunto mínimo do formato foi implementado. Matrizes são usadas para
+/** Este arquivo traz declaraï¿½ï¿½es para dois tipos e rotinas para manipulaï¿½ï¿½o de
+ * arquivos bmp. Como temos um propï¿½sito puramente didï¿½tico, apenas um sub-
+ * conjunto mï¿½nimo do formato foi implementado. Matrizes sï¿½o usadas para
  * representar os dados. Vetores seriam computacionalmente mais eficientes, mas
  * aqui procuramos priorizar a clareza e a facilidade de uso. */
 /*============================================================================*/
@@ -38,10 +38,10 @@ void putLittleEndianUShort (unsigned short val, unsigned char* buffer);
 /*============================================================================*/
 /** Cria uma imagem vazia.
  *
- * Parâmetros: int largura: largura da imagem.
+ * Parï¿½metros: int largura: largura da imagem.
  *             int altura: altura da imagem.
  *
- * Valor de retorno: a imagem alocada. A responsabilidade por desalocá-la é do
+ * Valor de retorno: a imagem alocada. A responsabilidade por desalocï¿½-la ï¿½ do
  *                   chamador. */
 
 Imagem1C* criaImagem1C (int largura, int altura)
@@ -64,7 +64,7 @@ Imagem1C* criaImagem1C (int largura, int altura)
 /*----------------------------------------------------------------------------*/
 /** Destroi uma imagem dada.
  *
- * Parâmetros: Imagem1C* img: a imagem a destruir.
+ * Parï¿½metros: Imagem1C* img: a imagem a destruir.
  *
  * Valor de retorno: nenhum. */
 
@@ -81,10 +81,10 @@ void destroiImagem1C (Imagem1C* img)
 /*----------------------------------------------------------------------------*/
 /** Abre um arquivo de imagem dado.
  *
- * Parâmetros: char* arquivo: caminho do arquivo a abrir.
+ * Parï¿½metros: char* arquivo: caminho do arquivo a abrir.
  *
  * Valor de retorno: uma imagem alocada contendo os dados do arquivo, ou NULL
- *                   se não for possível abrir a imagem. */
+ *                   se nï¿½o for possï¿½vel abrir a imagem. */
 
 Imagem1C* abreImagem1C (char* arquivo)
 {
@@ -98,8 +98,8 @@ Imagem1C* abreImagem1C (char* arquivo)
         return (NULL);
 
     /* Converte a imagem de 3 canais para grayscale. Usamos aqui os mesmos
-       fatores de conversão do OpenCV, que mantém certas propriedades de
-       percepção. */
+       fatores de conversï¿½o do OpenCV, que mantï¿½m certas propriedades de
+       percepï¿½ï¿½o. */
     img1c = criaImagem1C (img3c->largura, img3c->altura);
     for (i = 0; i < img3c->altura; i++)
         for (j = 0; j < img3c->largura; j++)
@@ -112,10 +112,10 @@ Imagem1C* abreImagem1C (char* arquivo)
 /*----------------------------------------------------------------------------*/
 /** Salva uma imagem em um arquivo dado.
  *
- * Parâmetros: Imagem1C* img: imagem a salvar.
+ * Parï¿½metros: Imagem1C* img: imagem a salvar.
  *             char* arquivo: caminho do arquivo a salvar.
  *
- * Valor de retorno: 0 se ocorreu algum erro, 1 do contrário. */
+ * Valor de retorno: 0 se ocorreu algum erro, 1 do contrï¿½rio. */
 
 int salvaImagem1C (Imagem1C* img, char* arquivo)
 {
@@ -144,10 +144,10 @@ int salvaImagem1C (Imagem1C* img, char* arquivo)
 /*============================================================================*/
 /** Cria uma imagem vazia.
  *
- * Parâmetros: int largura: largura da imagem.
+ * Parï¿½metros: int largura: largura da imagem.
  *             int altura: altura da imagem.
  *
- * Valor de retorno: a imagem alocada. A responsabilidade por desalocá-la é do
+ * Valor de retorno: a imagem alocada. A responsabilidade por desalocï¿½-la ï¿½ do
  *                   chamador. */
 
 Imagem3C* criaImagem3C (int largura, int altura)
@@ -174,7 +174,7 @@ Imagem3C* criaImagem3C (int largura, int altura)
 /*----------------------------------------------------------------------------*/
 /** Destroi uma imagem dada.
  *
- * Parâmetros: Imagem3C* img: a imagem a destruir.
+ * Parï¿½metros: Imagem3C* img: a imagem a destruir.
  *
  * Valor de retorno: nenhum. */
 
@@ -195,10 +195,10 @@ void destroiImagem3C (Imagem3C* img)
 /*----------------------------------------------------------------------------*/
 /** Abre um arquivo de imagem dado.
  *
- * Parâmetros: char* arquivo: caminho do arquivo a abrir.
+ * Parï¿½metros: char* arquivo: caminho do arquivo a abrir.
  *
  * Valor de retorno: uma imagem alocada contendo os dados do arquivo, ou NULL
- *                   se não for possível abrir a imagem. */
+ *                   se nï¿½o for possï¿½vel abrir a imagem. */
 
 Imagem3C* abreImagem3C (char* arquivo)
 {
@@ -223,7 +223,7 @@ Imagem3C* abreImagem3C (char* arquivo)
 		return (NULL);
 	}
 
-	/* Pronto, cabeçalhos lidos! Vamos agora colocar o fluxo nos dados... */
+	/* Pronto, cabeï¿½alhos lidos! Vamos agora colocar o fluxo nos dados... */
 	if (fseek (stream, data_offset, SEEK_SET) != 0)
 	{
 		printf ("Error reading file data.\n");
@@ -234,7 +234,7 @@ Imagem3C* abreImagem3C (char* arquivo)
 	/* ... e tudo pronto para criar nossa imagem! */
 	img = criaImagem3C (largura, altura);
 
-	/* Lê os dados. */
+	/* Lï¿½ os dados. */
 	if (!leDados (stream, img))
 	{
 		printf ("Error reading data from file.\n");
@@ -251,7 +251,7 @@ Imagem3C* abreImagem3C (char* arquivo)
 /** Pega os 4 primeiros bytes do buffer e coloca em um unsigned long,
  * considerando os bytes em ordem little endian.
  *
- * Parâmetros: unsigned char* buffer: lê 4 bytes daqui.
+ * Parï¿½metros: unsigned char* buffer: lï¿½ 4 bytes daqui.
  *
  * Valor de Retorno: um unsigned long com os dados do buffer reorganizados. */
 
@@ -261,13 +261,13 @@ unsigned long getLittleEndianULong (unsigned char* buffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/** Lê o header de 14 bytes do formato BMP.
+/** Lï¿½ o header de 14 bytes do formato BMP.
  *
- * Parâmetros: FILE* stream: arquivo a ser lido. Supomos que já está aberto.
- *             unsigned long* offset: parâmetro de saída, é o deslocamento dos
- *               dados a partir do início do arquivo.
+ * Parï¿½metros: FILE* stream: arquivo a ser lido. Supomos que jï¿½ estï¿½ aberto.
+ *             unsigned long* offset: parï¿½metro de saï¿½da, ï¿½ o deslocamento dos
+ *               dados a partir do inï¿½cio do arquivo.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int leHeaderBitmap (FILE* stream, unsigned long* offset)
 {
@@ -292,17 +292,17 @@ int leHeaderBitmap (FILE* stream, unsigned long* offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/** Lê o header DIB.
+/** Lï¿½ o header DIB.
  *
- * Parâmetros: FILE* stream: arquivo a ser lido. Supomos que já está aberto.
- *             unsigned long* largura: parâmetro de saída. Largura da imagem.
- *             unsigned long* altura: parâmetro de saída. Altura da imagem.
+ * Parï¿½metros: FILE* stream: arquivo a ser lido. Supomos que jï¿½ estï¿½ aberto.
+ *             unsigned long* largura: parï¿½metro de saï¿½da. Largura da imagem.
+ *             unsigned long* altura: parï¿½metro de saï¿½da. Altura da imagem.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int leHeaderDIB (FILE* stream, unsigned long* largura, unsigned long* altura)
 {
-	unsigned long size = 0; /* O tamanho do cabeçalho DIB. */
+	unsigned long size = 0; /* O tamanho do cabeï¿½alho DIB. */
 
 	if (fread ((void*) &size, 4, 1, stream) != 1)
 	{
@@ -341,28 +341,28 @@ int leHeaderDIB (FILE* stream, unsigned long* largura, unsigned long* altura)
 			return (0);
 		}
 
-		/* Bpp. Aqui, estou forçando 24 bpp. */
+		/* Bpp. Aqui, estou forï¿½ando 24 bpp. */
 		if (fread ((void*) &tmp_short, 2, 1, stream) != 1 || tmp_short != 24)
 		{
 			printf ("Error: this function supports only 24 bpp files.\n");
 			return (0);
 		}
 
-		/* Compressão. Vou aceitar só imagens sem compressão. */
+		/* Compressï¿½o. Vou aceitar sï¿½ imagens sem compressï¿½o. */
 		if (fread ((void*) &tmp_long, 4, 1, stream) != 1 || tmp_long != 0)
 		{
 			printf ("Error: this function supports only uncompressed files.\n");
 			return (0);
 		}
 
-		/* Pula os próximos 12 bytes. */
+		/* Pula os prï¿½ximos 12 bytes. */
 		if (fseek (stream, 12, SEEK_CUR) != 0)
 		{
 			printf ("Error reading DIB header.\n");
 			return (0);
 		}
 
-		/* Paleta. Não é para usar! */
+		/* Paleta. Nï¿½o ï¿½ para usar! */
 		if (fread ((void*) &tmp_long, 4, 1, stream) != 1 || tmp_long != 0)
 		{
 			printf ("Error: this function does not support color palettes.\n");
@@ -376,12 +376,12 @@ int leHeaderDIB (FILE* stream, unsigned long* largura, unsigned long* altura)
 }
 
 /*----------------------------------------------------------------------------*/
-/** Lê os dados de um arquivo.
+/** Lï¿½ os dados de um arquivo.
  *
- * Parâmetros: FILE* stream: arquivo a ser lido. Supomos que já está aberto.
+ * Parï¿½metros: FILE* stream: arquivo a ser lido. Supomos que jï¿½ estï¿½ aberto.
  *             Imagem3C* img: imagem a preencher.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int leDados (FILE* stream, Imagem3C* img)
 {
@@ -389,10 +389,10 @@ int leDados (FILE* stream, Imagem3C* img)
 	int line_padding;
 
 	/* Calcula quantos bytes preciso pular no fim de cada linha.
-	  Aqui, cada linha precisa ter um múltiplo de 4. */
+	  Aqui, cada linha precisa ter um mï¿½ltiplo de 4. */
 	line_padding = (int) ceil (img->largura*3.0/4.0)*4 - (img->largura*3);
 
-	/* Lê! */
+	/* Lï¿½! */
 	for (i = img->altura-1; i >= 0; i--)
 	{
 		for (j = 0; j < img->largura; j++)
@@ -417,10 +417,10 @@ int leDados (FILE* stream, Imagem3C* img)
 /*----------------------------------------------------------------------------*/
 /** Salva uma imagem em um arquivo dado.
  *
- * Parâmetros: Imagem3C* img: imagem a salvar.
+ * Parï¿½metros: Imagem3C* img: imagem a salvar.
  *             char* arquivo: caminho do arquivo a salvar.
  *
- * Valor de retorno: 0 se ocorreu algum erro, 1 do contrário. */
+ * Valor de retorno: 0 se ocorreu algum erro, 1 do contrï¿½rio. */
 
 int salvaImagem3C (Imagem3C* img, char* arquivo)
 {
@@ -458,7 +458,7 @@ int salvaImagem3C (Imagem3C* img, char* arquivo)
 /** Coloca um unsigned long nos 4 primeiros bytes do buffer, em ordem little
  * endian.
  *
- * Parâmetros: unsigned long val: valor a escrever.
+ * Parï¿½metros: unsigned long val: valor a escrever.
  *             unsigned char* buffer: coloca o valor aqui.
  *
  * Valor de Retorno: NENHUM */
@@ -475,7 +475,7 @@ void putLittleEndianULong (unsigned long val, unsigned char* buffer)
 /** Coloca um unsigned short nos 2 primeiros bytes do buffer, em ordem little
  * endian.
  *
- * Parâmetros: unsigned short val: valor a escrever.
+ * Parï¿½metros: unsigned short val: valor a escrever.
  *             unsigned char* buffer: coloca o valor aqui.
  *
  * Valor de Retorno: NENHUM */
@@ -489,10 +489,10 @@ void putLittleEndianUShort (unsigned short val, unsigned char* buffer)
 /*----------------------------------------------------------------------------*/
 /** Escreve o header Bitmap.
  *
- * Parâmetros: FILE* file: arquivo a ser escrito. Supomos que já está aberto.
+ * Parï¿½metros: FILE* file: arquivo a ser escrito. Supomos que jï¿½ estï¿½ aberto.
  *             Imagem3C* img: imagem a ser salva.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int salvaHeaderBitmap (FILE* stream, Imagem3C* img)
 {
@@ -503,7 +503,7 @@ int salvaHeaderBitmap (FILE* stream, Imagem3C* img)
 	data [pos++] = 'B';
 	data [pos++] = 'M';
 
-	/* Tamanho do arquivo. Definimos como sendo 14+40 (dos cabeçalhos) + o espaço dos dados. */
+	/* Tamanho do arquivo. Definimos como sendo 14+40 (dos cabeï¿½alhos) + o espaï¿½o dos dados. */
 	bytes_por_linha = (unsigned long) ceil (img->largura*3.0/4.0)*4;
 	putLittleEndianULong (14+40+img->altura*bytes_por_linha, &(data [pos]));
 	pos+=4;
@@ -512,7 +512,7 @@ int salvaHeaderBitmap (FILE* stream, Imagem3C* img)
 	putLittleEndianULong (0, &(data [pos]));
 	pos+=4;
 
-	/* Offset. Definimos como 14+40 (o tamanho dos cabeçalhos). */
+	/* Offset. Definimos como 14+40 (o tamanho dos cabeï¿½alhos). */
 	putLittleEndianULong (14+40, &(data [pos]));
 
 	if (fwrite ((void*) data, 1, 14, stream) != 14)
@@ -527,10 +527,10 @@ int salvaHeaderBitmap (FILE* stream, Imagem3C* img)
 /*----------------------------------------------------------------------------*/
 /** Escreve o header DIB.
  *
- * Parâmetros: FILE* file: arquivo a ser escrito. Supomos que já está aberto.
+ * Parï¿½metros: FILE* file: arquivo a ser escrito. Supomos que jï¿½ estï¿½ aberto.
  *             Imagem3C* img: imagem a ser salva.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int salvaHeaderDIB (FILE* stream, Imagem3C* img)
 {
@@ -558,7 +558,7 @@ int salvaHeaderDIB (FILE* stream, Imagem3C* img)
 	putLittleEndianUShort (24, &(data [pos]));
 	pos += 2;
 
-	/* Compressão. */
+	/* Compressï¿½o. */
 	putLittleEndianULong (0, &(data [pos]));
 	pos += 4;
 
@@ -567,7 +567,7 @@ int salvaHeaderDIB (FILE* stream, Imagem3C* img)
 	putLittleEndianULong (img->altura*bytes_por_linha, &(data [pos]));
 	pos += 4;
 
-	/* Resolução horizontal e vertical (simplesmente copiei este valor de algum arquivo!). */
+	/* Resoluï¿½ï¿½o horizontal e vertical (simplesmente copiei este valor de algum arquivo!). */
 	putLittleEndianULong (0xF61, &(data [pos]));
 	pos += 4;
 	putLittleEndianULong (0xF61, &(data [pos]));
@@ -591,10 +591,10 @@ int salvaHeaderDIB (FILE* stream, Imagem3C* img)
 /*----------------------------------------------------------------------------*/
 /** Escreve o bloco de dados.
  *
- * Parâmetros: FILE* file: arquivo a ser escrito. Supomos que já está aberto.
+ * Parï¿½metros: FILE* file: arquivo a ser escrito. Supomos que jï¿½ estï¿½ aberto.
  *             Imagem3C* img: imagem a ser salva.
  *
- * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
+ * Valor de Retorno: 1 se nï¿½o ocorreram erros, 0 do contrï¿½rio. */
 
 int salvaDados (FILE* stream, Imagem3C* img)
 {
@@ -604,7 +604,7 @@ int salvaDados (FILE* stream, Imagem3C* img)
 	unsigned long pos_linha;
 
 	/* Calcula quantos bytes preciso pular no fim de cada linha.
-	  Aqui, cada linha precisa ter um múltiplo de 4. */
+	  Aqui, cada linha precisa ter um mï¿½ltiplo de 4. */
 	largura_linha = (unsigned long) ceil (img->largura*3.0/4.0)*4;
 	line_padding = largura_linha - (img->largura*3);
 	linha = (unsigned char*) malloc (sizeof (unsigned char) * largura_linha);
