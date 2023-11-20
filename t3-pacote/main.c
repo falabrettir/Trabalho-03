@@ -11,16 +11,16 @@
 #include "trabalho3.h"
 
 /*============================================================================*/
-/* Um modificador para a semente usada pelo gerador de números aleatórios na
- * hora de criar imagens de teste. Todos os trabalhos usarão as mesmas
- * imagens, então o offset precisa ser igual para todos. Entretanto, usaremos
+/* Um modificador para a semente usada pelo gerador de nï¿½meros aleatï¿½rios na
+ * hora de criar imagens de teste. Todos os trabalhos usarï¿½o as mesmas
+ * imagens, entï¿½o o offset precisa ser igual para todos. Entretanto, usaremos
  * um valor diferente na hora de testar os trabalhos de fato. */
 
 #define RANDOM_SEED_OFFSET 0
 
 #define N_TESTES 1
 
-#define SALVA_INTERMEDIARIOS 1 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
+#define SALVA_INTERMEDIARIOS 0 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
 
 /*============================================================================*/
 
@@ -57,7 +57,7 @@ int main ()
         }
         diagonal = sqrt (img->altura*img->altura + img->largura*img->largura);
 
-        /* Salva (se necessário). */
+        /* Salva (se necessï¿½rio). */
         if (SALVA_INTERMEDIARIOS)
         {
             char foostring [64];
@@ -92,7 +92,7 @@ int main ()
         destroiImagem1C (img);
     }
 
-    /* Calcula média, máximo e desvio padrão. */
+    /* Calcula mï¿½dia, mï¿½ximo e desvio padrï¿½o. */
     erro_medio = erros [0];
     erro_max = erros [0];
     pior_teste = 0;
