@@ -10,7 +10,7 @@ void diminuiRuido(Imagem1C* img);
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    diminuiRuido(img);
+    //diminuiRuido(img);
     return 0.0;
 }
 
@@ -36,5 +36,5 @@ void diminuiRuido(Imagem1C* img)
                 img->dados[i][j] = 0;
         }
     }
-    salvaImagem1C(img, "imagem0.bmp");
+    salvaImagem1C(img, "sem_ruido.bmp");
 }
