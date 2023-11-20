@@ -55,8 +55,8 @@ Imagem1C* criaImagem1C (int largura, int altura)
 	img->altura = altura;
 
     img->dados = (unsigned char**) malloc (sizeof (unsigned char*) * altura);
-    for (i = 0; i < altura; i++)
-        img->dados [i] = (unsigned char*) malloc (sizeof (unsigned char) * largura);
+	for (i = 0; i < altura; i++)
+    	img->dados [i] = (unsigned char*) malloc (sizeof (unsigned char) * largura);
 
 	return (img);
 }
@@ -72,7 +72,7 @@ void destroiImagem1C (Imagem1C* img)
 {
 	unsigned long i;
 
-    for (i = 0; i < img->altura; i++)
+	for (i = 0; i < img->altura; i++)
         free (img->dados [i]);
 	free (img->dados);
 	free (img);

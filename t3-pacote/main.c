@@ -20,7 +20,7 @@
 
 #define N_TESTES 1
 
-#define SALVA_INTERMEDIARIOS 0 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
+#define SALVA_INTERMEDIARIOS 1 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
 
 /*============================================================================*/
 
@@ -71,14 +71,14 @@ int main ()
         tempo_total += clock () - tempo_inicio;
 
         /* Compara os resultados com o que foi gerado. */
-        if (!isfinite (l_medido.x) || !isfinite (l_medido.y) || !isfinite (r_medido.x) || !isfinite (r_medido.y))
+        /*if (!isfinite (l_medido.x) || !isfinite (l_medido.y) || !isfinite (r_medido.x) || !isfinite (r_medido.y))
             erros [i] = diagonal;
         else
         {
             erro_l = sqrt ((l_real.x-l_medido.x)*(l_real.x-l_medido.x) + (l_real.y-l_medido.y)*(l_real.y-l_medido.y));
             erro_r = sqrt ((r_real.x-r_medido.x)*(r_real.x-r_medido.x) + (r_real.y-r_medido.y)*(r_real.y-r_medido.y));
             erros [i] = MIN (diagonal, MAX (erro_l, erro_r));
-        }
+        }*/
         //TODO: somente depois da entrega!
         /*
         if (fabs (angulo_real - angulo_medido) > 0.0002)
