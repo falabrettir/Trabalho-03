@@ -10,7 +10,7 @@ void diminuiRuido(Imagem1C* img);
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    //diminuiRuido(img);
+    diminuiRuido(img);
     return 0.0;
 }
 
@@ -22,27 +22,30 @@ double calculaAngulo(Coordenada l, Coordenada r)
 Coordenada* achaCentros(Imagem1C img)
 {
     // Acha o centro de uma bola
+    Coordenada* falabrolhos;
+    return falabrolhos;
 }
 
 void diminuiRuido(Imagem1C* img)
 {
     int i, j, soma, media;
-
-    for (i = 0; i < img->altura; i++)
+    for (i = 1; i < img->altura-1; i++)
     {
         soma = 0;
         media = 0;
-        for (j = 0; j < img->largura; j++)
+        for (j = 1; j < img->largura-1; j++)
         {
-            soma = img->dados[i][j+1] + img->dados[i][j-1] + img->dados[i+1][j] + img->dados[i-1][j] + img->dados[i][j];
-            media = soma/5;
-            if(media < 120)
+            if (img->dados[i][j] < 187)
+            soma = img->dados[i][j+1]*20 + img->dados[i][j-1]*20 + img->dados[i+1][j]*20 + img->dados[i-1][j]*20 + img->dados[i][j]*30 + 
+                   img->dados[i+1][j-1]*10 + img->dados[i+1][j+1]*10 + img->dados[i-1][j-1]*10 + img->dados[i-1][j+1]*10;
+            media = soma/150;
+            if(media < 90)
             {
-                img->dados[i][j] = 255;
+                img->dados[i][j] = 0;
             }
             else
             {
-                img->dados[i][j] = 0;
+                img->dados[i][j] = 255;
             }
         }
     }
