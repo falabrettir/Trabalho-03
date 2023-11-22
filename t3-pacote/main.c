@@ -11,14 +11,14 @@
 #include "trabalho3.h"
 
 /*============================================================================*/
-/* Um modificador para a semente usada pelo gerador de nï¿½meros aleatï¿½rios na
- * hora de criar imagens de teste. Todos os trabalhos usarï¿½o as mesmas
- * imagens, entï¿½o o offset precisa ser igual para todos. Entretanto, usaremos
+/* Um modificador para a semente usada pelo gerador de números aleatórios na
+ * hora de criar imagens de teste. Todos os trabalhos usarão as mesmas
+ * imagens, então o offset precisa ser igual para todos. Entretanto, usaremos
  * um valor diferente na hora de testar os trabalhos de fato. */
 
 #define RANDOM_SEED_OFFSET 0
 
-#define N_TESTES 20
+#define N_TESTES 1
 
 #define SALVA_INTERMEDIARIOS 1 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
 
@@ -57,7 +57,7 @@ int main ()
         }
         diagonal = sqrt (img->altura*img->altura + img->largura*img->largura);
 
-        /* Salva (se necessï¿½rio). */
+        /* Salva (se necessário). */
         if (SALVA_INTERMEDIARIOS)
         {
             char foostring [64];
@@ -71,14 +71,10 @@ int main ()
         tempo_total += clock () - tempo_inicio;
 
         /* Compara os resultados com o que foi gerado. */
-        /*if (!isfinite (l_medido.x) || !isfinite (l_medido.y) || !isfinite (r_medido.x) || !isfinite (r_medido.y))
-            erros [i] = diagonal;
-        else
-        {
-            erro_l = sqrt ((l_real.x-l_medido.x)*(l_real.x-l_medido.x) + (l_real.y-l_medido.y)*(l_real.y-l_medido.y));
-            erro_r = sqrt ((r_real.x-r_medido.x)*(r_real.x-r_medido.x) + (r_real.y-r_medido.y)*(r_real.y-r_medido.y));
-            erros [i] = MIN (diagonal, MAX (erro_l, erro_r));
-        }*/
+        erro_l = sqrt ((l_real.x-l_medido.x)*(l_real.x-l_medido.x) + (l_real.y-l_medido.y)*(l_real.y-l_medido.y));
+        erro_r = sqrt ((r_real.x-r_medido.x)*(r_real.x-r_medido.x) + (r_real.y-r_medido.y)*(r_real.y-r_medido.y));
+        erros [i] = MIN (diagonal, MAX (erro_l, erro_r));
+
         //TODO: somente depois da entrega!
         /*
         if (fabs (angulo_real - angulo_medido) > 0.0002)
@@ -92,7 +88,7 @@ int main ()
         destroiImagem1C (img);
     }
 
-    /* Calcula mï¿½dia, mï¿½ximo e desvio padrï¿½o. */
+    /* Calcula média, máximo e desvio padrão. */
     erro_medio = erros [0];
     erro_max = erros [0];
     pior_teste = 0;
