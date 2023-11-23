@@ -26,15 +26,22 @@ Coordenada* achaCentros(Imagem1C img)
 
 void diminuiRuido(Imagem1C* img)
 {
-    int i, j;
+    int i, j, soma, media;
 
-    for (i = 0; i < img->altura; i++)
+    for (i = 1; i < img->altura-1; i++)
     {
-        for (j = 0; j < img->largura; j++)
+        for (j = 1; j < img->largura-1; j++)
         {
-            if (img->dados[i][j] < 187)
+            soma = img->dados[i][j+1]*20 + img->dados[i][j-1]*20 + img->dados[i+1][j]*20 + img->dados[i-1][j]*20 + img->dados[i][j]*30 + 
+                   img->dados[i+1][j-1]*10 + img->dados[i+1][j+1]*10 + img->dados[i-1][j-1]*10 + img->dados[i-1][j+1]*10;
+
+            media = soma/150;
+
+            if(media < 120)
                 img->dados[i][j] = 0;
+            else
+                img->dados[i][j] = 255;
+            
         }
     }
-    salvaImagem1C(img, "sem_ruido.bmp");
 }
