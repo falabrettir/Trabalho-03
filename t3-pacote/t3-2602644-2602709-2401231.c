@@ -22,11 +22,11 @@ double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 
     diminuiRuido(img);
     
-    matriz_rotulada = rotulaMatriz(img);
+    /* matriz_rotulada = rotulaMatriz(img);
 
     for (i = 0; i < img->altura; i++)
         free(matriz_rotulada[i]);
-    free(matriz_rotulada);
+    free(matriz_rotulada);*/
     
     return 0.0;
 }
