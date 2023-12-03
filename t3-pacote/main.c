@@ -57,6 +57,19 @@ int main ()
         }
         diagonal = sqrt (img->altura*img->altura + img->largura*img->largura);
 
+        /* Salva (se necess�rio). 
+        if (SALVA_INTERMEDIARIOS)
+        {
+            char foostring [64];
+            sprintf (foostring, "teste%d.bmp", i);
+            salvaImagem1C (img, foostring);
+        }*/
+
+        /* Invoca o testador. */
+        tempo_inicio = clock ();
+        angulo_medido = detectaSensorBar (img, &l_medido, &r_medido);
+        tempo_total += clock () - tempo_inicio;
+
         /* Salva (se necess�rio). */
         if (SALVA_INTERMEDIARIOS)
         {
@@ -64,11 +77,6 @@ int main ()
             sprintf (foostring, "teste%d.bmp", i);
             salvaImagem1C (img, foostring);
         }
-
-        /* Invoca o testador. */
-        tempo_inicio = clock ();
-        angulo_medido = detectaSensorBar (img, &l_medido, &r_medido);
-        tempo_total += clock () - tempo_inicio;
 
         /* Compara os resultados com o que foi gerado. */
         erro_l = sqrt ((l_real.x-l_medido.x)*(l_real.x-l_medido.x) + (l_real.y-l_medido.y)*(l_real.y-l_medido.y));
@@ -110,10 +118,10 @@ int main ()
     desvpad /= N_TESTES;
     desvpad = sqrt (desvpad);
 
-    /* Mostra os resultados. */
+
     printf ("----------------------------------------\n");
     printf ("Erro medio: %.6f\n", erro_medio);
-    printf ("Pior teste: %d (erro: %.6f)\n", pior_teste, erro_max);
+    printf ("Pior teste: %d (erro: %.10ff)\n", pior_teste, erro_max);
     printf ("Desvio padrao: %.6f\n", desvpad);
     printf ("Score: %.6f\n", erro_medio + 1.5*desvpad);
     // TODO: depois da entrega! printf ("Angulos errados: %d\n", angulos_errados);
