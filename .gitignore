@@ -54,4 +54,5 @@ dkms.conf
 *.bmp
 *.json
 tasks.json
+.vscode
 
