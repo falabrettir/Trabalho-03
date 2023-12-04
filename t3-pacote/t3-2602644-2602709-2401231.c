@@ -1,125 +1,118 @@
 #include "trabalho3.h"
 #include "imagem.h"
-#include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-#define MAX2(a, b) (a > b ? a:b)
-#define MAX3(a, b, c) (MAX2(MAX2(a, b), c))
-#define MAX4(a, b, c, d) (MAX2(MAX3(a, b, c), d))
+#define CINZA 120
+#define ALT_MAX 1080
+#define LARG_MAX 1920
+#define BOLA_ESQUERDA 1
+#define BOLA_DIREITA 2
 
-double calculaAngulo(Coordenada l, Coordenada r);
-Coordenada* achaCentros(Imagem1C img);
+typedef struct
+{
+    int left;
+    int right;
+    int top;
+    int bottom;
+} Cerca;
+
+
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r);
 void diminuiRuido(Imagem1C* img);
-int** rotulaMatriz(Imagem1C* img);
-int menorDiferenteDeZero(int a, int b, int c, int d);
-
+void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r);
+void rotulaMatriz(Imagem1C* img);
+//int menorRotulo(int a, int b, int c, int d);
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    int** matriz_rotulada;
-    int i;
+    int i, j;
 
-    diminuiRuido(img);
-    
-    /* matriz_rotulada = rotulaMatriz(img);
-
-    for (i = 0; i < img->altura; i++)
-        free(matriz_rotulada[i]);
-    free(matriz_rotulada);*/
-    
-    return 0.0;
+    diminuiRuido(img); 
+    achaCentro(img, l, r);
+    return 0;
 }
 
 void diminuiRuido(Imagem1C* img)
 {
     int i, j, soma, media;
-    Imagem1C copia = *img;
+    unsigned char copia[ALT_MAX][LARG_MAX];
 
-    for (i = 1; i < img->altura-1; i++)
+    for (i = 1; i < img->altura - 1; i++)
     {
-        for (j = 1; j < img->largura-1; j++)
+        for (j = 1; j < img->largura - 1; j++)
         {
             soma = img->dados[i][j+1]*20 + img->dados[i][j-1]*20 + img->dados[i+1][j]*20 + img->dados[i-1][j]*20 + img->dados[i][j]*30 + 
                    img->dados[i+1][j-1]*10 + img->dados[i+1][j+1]*10 + img->dados[i-1][j-1]*10 + img->dados[i-1][j+1]*10;
 
             media = soma/150;
 
-            if(media < 120)
-                copia.dados[i][j] = 0;
+            if(media < CINZA)
+                copia[i][j] = 0;
             else
-                copia.dados[i][j] = 255;
+                copia[i][j] = 1;
         }
-        img->dados = copia.dados;
     }
-}
-
-int** rotulaMatriz(Imagem1C* img)
-{
-    int i, j;
-    int rotulo, soma_vizinhanca;
-    int **matriz_rotulada;
-
-    matriz_rotulada = (int**) malloc(sizeof(int*) * img->altura);
-    for (i = 0; i < img->largura; i++)
-        matriz_rotulada[i] = (int*) malloc(sizeof(int) * img->largura);
 
     for (i = 0; i < img->altura; i++)
     {
         for (j = 0; j < img->largura; j++)
         {
-            if (img->dados[i][j])
-                matriz_rotulada[i][j] = -1;
+            if (i<2 || j<2 || i >= img->altura-2 || j >= img->largura-2)
+                img->dados[i][j] = 0;
+            else
+                img->dados[i][j] = copia[i][j];
+        }
+    }
+}
+
+void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
+{
+    int soma_x[LARG_MAX] = {0}, soma_y[ALT_MAX] = {0};
+    int i, j;
+
+    for (i = 0; i < img->altura; i++)
+    {
+        for (j = 0; j < img->largura; j++)
+        {
+            soma_y[i] += img->dados[i][j];
+        }
+    }
+    for (j = 0; j < img->largura; j++)
+    {
+        for (i = 0; i < img->altura; i++)
+        {
+            soma_x[j] += img->dados[i][j];
+        }
+    }
+    i = 0;
+}
+
+/*void rotulaMatriz(Imagem1C* img)
+{
+    int matriz_rotulada[LARG_MAX][ALT_MAX];
+    int i, j, rotulo;
+
+    for (i = 0; i < img->altura; i++)
+    {
+        for (j = 0; j < img->largura; j++)
+        {
+            matriz_rotulada[i][j] = 0;
         }
     }
 
     rotulo = 1;
-    for (i = 1; i < img->altura - 1; i++)
+    for (j = 0; j < img->largura; j++)
     {
-        for (j = 1; j < img->largura - 1; j++)
+        for (i = 0; i < img->altura; i++)
         {
-            if (img->dados[i][j])
+            if (img->dados[i][j]) // se tiver um pixel branco
             {
-                soma_vizinhanca = img->dados[i][j-1] + img->dados[i-1][j-1] + img->dados[i-1][j] + img->dados[i-1][j+1];
-                if (!soma_vizinhanca)
-                {
-                    matriz_rotulada[i][j] = rotulo++;
-                }
+                if (img->dados[i-1][j] || img->dados[i-1][j-1] || img->dados[i][j-1] || img->dados[i+1][j-1])
+                    matriz_rotulada[i][j] = menorRotulo(img->dados[i-1][j], img->dados[i-1][j-1], img->dados[i][j-1], img->dados[i+1][j-1]);
                 else
-                {
-                    matriz_rotulada[i][j] = menorDiferenteDeZero(matriz_rotulada[i][j-1], matriz_rotulada[i-1][j-1], matriz_rotulada[i-1][j], matriz_rotulada[i-1][j+1]);
-                }
+                    matriz_rotulada[i][j] = rotulo++;
             }
         }
     }
-
-    for (i = img->altura - 2; i > 0; i--)
-    {
-        for (j = img->largura - 2; j > 0 ; j--)
-        {
-            if (matriz_rotulada[i][j])
-            {
-                soma_vizinhanca = matriz_rotulada[i][j+1] + matriz_rotulada[i+1][j+1] + matriz_rotulada[i+1][j] + matriz_rotulada[i+1][j-1];
-                if (soma_vizinhanca)
-                    {
-                        matriz_rotulada[i][j] = menorDiferenteDeZero(matriz_rotulada[i][j+1], matriz_rotulada[i+1][j+1], matriz_rotulada[i+1][j], matriz_rotulada[i+1][j-1]);
-                    }
-            }
-        }
-    }
-    return matriz_rotulada;
-}
-
-int menorDiferenteDeZero(int a, int b, int c, int d)
-{
-    int i;
-    int vals[] = {a, b, c, d};
-    int menor;
-    menor = MAX4(a, b, c, d);
-    for (i = 0; i < 4; i++)
-    {
-        if (vals[i] && (vals[i] < menor))
-            menor = vals[i];
-    }
-    return menor;
-}
+}*/
