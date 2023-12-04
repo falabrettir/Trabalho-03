@@ -29,7 +29,7 @@ double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
     int i, j;
 
     diminuiRuido(img); 
-    achaCentro(img, l, r);
+    // achaCentro(img, l, r);
     return 0;
 }
 
@@ -50,7 +50,7 @@ void diminuiRuido(Imagem1C* img)
             if(media < CINZA)
                 copia[i][j] = 0;
             else
-                copia[i][j] = 1;
+                copia[i][j] = 255;
         }
     }
 
@@ -88,10 +88,15 @@ void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
     i = 0;
 }
 
-/*void rotulaMatriz(Imagem1C* img)
+
+void rotulaMatriz(Imagem1C* img)
 {
-    int matriz_rotulada[LARG_MAX][ALT_MAX];
     int i, j, rotulo;
+    int** matriz_rotulada;
+
+    matriz_rotulada = (int**) malloc(sizeof(int*) * img->altura);
+    for (i = 0; i < img->altura; i++)
+        matriz_rotulada[i] = (int) malloc(sizeof(int) * img->largura);
 
     for (i = 0; i < img->altura; i++)
     {
@@ -102,17 +107,31 @@ void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
     }
 
     rotulo = 1;
-    for (j = 0; j < img->largura; j++)
+    for (i = 0; i < img->altura; i++)
     {
-        for (i = 0; i < img->altura; i++)
+        for (j = 0; j < img->largura; j++)
         {
             if (img->dados[i][j]) // se tiver um pixel branco
             {
-                if (img->dados[i-1][j] || img->dados[i-1][j-1] || img->dados[i][j-1] || img->dados[i+1][j-1])
-                    matriz_rotulada[i][j] = menorRotulo(img->dados[i-1][j], img->dados[i-1][j-1], img->dados[i][j-1], img->dados[i+1][j-1]);
+                if (matriz_rotulada[i-1][j] || matriz_rotulada[i-1][j-1] || matriz_rotulada[i][j-1] || matriz_rotulada[i+1][j-1])
+                    matriz_rotulada[i][j] = menorRotulo(matriz_rotulada[i-1][j], matriz_rotulada[i-1][j-1], matriz_rotulada[i][j-1], matriz_rotulada[i+1][j-1]);
                 else
                     matriz_rotulada[i][j] = rotulo++;
             }
         }
     }
-}*/
+
+    for (i = img->altura - 1; i >= 0; i--)
+    {
+        for (j = img->largura - 1; j >= 0; j--)
+        {
+            if (matriz_rotulada[i][j]) // quando achar um pixel rotulado
+            {
+                if (1) 
+                    matriz_rotulada[i][j] = 1;
+                else
+                    matriz_rotulada[i][j] = rotulo++;
+            }
+        }
+    }
+}
