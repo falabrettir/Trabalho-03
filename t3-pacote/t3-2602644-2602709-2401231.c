@@ -2,62 +2,49 @@
 #include "imagem.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include<math.h>
 
 #define CINZA 120
-#define ALT_MAX 1080
-#define LARG_MAX 1920
-#define BOLA_ESQUERDA 1
-#define BOLA_DIREITA 2
+
+// ============================================================================== //
+// Tipo Caixa
 
 typedef struct
 {
-    int left;
-    int right;
-    int top;
-    int bottom;
-} Cerca;
+    int esquerda;
+    int direita;
+    int fundo;
+    int topo;
+} Caixa;
 
+// ============================================================================== //
+// Cabeçalhos de funções
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r);
 void diminuiRuido(Imagem1C* img);
-void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r);
+void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r);
 int** rotulaMatriz(Imagem1C* img);
 int menorRotulo(int a, int b, int c, int d);
+double calculaAngulo(Coordenada* coord1, Coordenada* coord2);
+
+// ============================================================================== //
+// Implementação das funções
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    int i, j, k;
-    int** matriz_rotulada;
-    int conta_nums[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    achaCentros(img, l, r);
 
-    diminuiRuido(img);
-    matriz_rotulada = rotulaMatriz(img);
-
-    for (i = 0; i < img->altura; i++)
-    {
-        for (j = 0; j < img->largura; j++)
-        {
-            if (matriz_rotulada[i][j])
-                printf("\n\n ACHOU  %d  %d  %d\n\n", matriz_rotulada[i][j], i, j);
-        }
-    }
-
-    for (k = 1; k < 11; k++)
-    {
-        printf("%2d ", conta_nums[k]);
-    }
-
-    for (i = 0; i < img->altura; i++)
-        free(matriz_rotulada[i]);
-    free(matriz_rotulada);
-
-    return 0;
+    return calculaAngulo(l, r);
 }
 
 void diminuiRuido(Imagem1C* img)
 {
     int i, j, soma, media;
-    unsigned char copia[ALT_MAX][LARG_MAX];
+    unsigned char** copia;
+
+    copia = (unsigned char**) malloc(sizeof(unsigned char*) * img->altura);
+    for (i = 0; i < img->altura; i++)
+        copia[i] = (unsigned char*) malloc(sizeof(unsigned char) * img->largura);
 
     for (i = 1; i < img->altura - 1; i++)
     {
@@ -79,19 +66,31 @@ void diminuiRuido(Imagem1C* img)
     {
         for (j = 0; j < img->largura; j++)
         {
-            if (i<2 || j<2 || i >= img->altura-2 || j >= img->largura-2)
+            if (i<2 || j<2 || i >= img->altura-2 || j >= img->largura-2) // tirando o ruído das bordas
                 img->dados[i][j] = 0;
             else
                 img->dados[i][j] = copia[i][j];
         }
     }
+
+    for (i = 0; i < img->altura; i++)
+        free(copia[i]);
+    free(copia);
 }
 
-void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
+void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    
-}
+    int **matriz_rotulada;
+    int i, j;
 
+    diminuiRuido(img);
+
+    matriz_rotulada = rotulaMatriz(img);
+
+    for (i = 0; i < img->altura; i++)
+        free(matriz_rotulada[i]);
+    free(matriz_rotulada);
+}
 
 int** rotulaMatriz(Imagem1C* img)
 {
@@ -154,4 +153,12 @@ int menorRotulo(int a, int b, int c, int d)
             menor = nums[i];
 
     return menor;
+}
+
+double calculaAngulo(Coordenada* coord1, Coordenada* coord2)
+{
+    if(coord1->x == coord2->x)
+        return 0.0;
+    else
+        return atan((coord1->y - coord2->y)/(coord1->x - coord2->x));
 }

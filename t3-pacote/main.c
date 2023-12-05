@@ -16,11 +16,11 @@
  * imagens, ent�o o offset precisa ser igual para todos. Entretanto, usaremos
  * um valor diferente na hora de testar os trabalhos de fato. */
 
-#define RANDOM_SEED_OFFSET 11
+#define RANDOM_SEED_OFFSET 0
 
-#define N_TESTES 1
+#define N_TESTES 10
 
-#define SALVA_INTERMEDIARIOS 0 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
+#define SALVA_INTERMEDIARIOS 1 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
 
 /*============================================================================*/
 
