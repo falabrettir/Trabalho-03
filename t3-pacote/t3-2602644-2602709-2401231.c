@@ -1,7 +1,6 @@
 #include "trabalho3.h"
 #include "imagem.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include<math.h>
 
 #define CINZA 120
@@ -229,3 +228,5 @@ double calculaAngulo(Coordenada* coord1, Coordenada* coord2)
     else
         return atan((coord1->y - coord2->y)/(coord1->x - coord2->x));
 }
+
+// ============================================================================== //
