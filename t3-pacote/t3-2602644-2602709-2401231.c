@@ -81,11 +81,78 @@ void diminuiRuido(Imagem1C* img)
 void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
     int **matriz_rotulada;
-    int i, j;
+    int i, j, rotulo;
+    Caixa esquerda_caixa, direita_caixa;
 
     diminuiRuido(img);
 
     matriz_rotulada = rotulaMatriz(img);
+
+    // ============================================================================== //
+    // Cercando bola da esquerda
+
+    for (j = 0; j < img->largura; j++) // percorrer a matriz procurando objeto (coluna por coluna)
+    {
+        for (i = 0; i < img->altura; i++)
+        {
+            if (matriz_rotulada[i][j]) // guardar o rotulo do objeto encontrado ACHOU O PONTO MAIS À ESQUERDA
+            {
+                rotulo = matriz_rotulada[i][j];
+                esquerda_caixa.esquerda = j; // cercar pela esquerda
+                // cercar pela direita
+            }
+        }
+    }
+    
+    for (i = 0; i < img->altura; i++) // percorrer a matriz (linha por linha)
+    {
+        for (j = 0; j < img->largura; j++)
+        {
+            if (matriz_rotulada[i][j] == rotulo) // procurando objeto com rótulo armazenado ACHOU O TOPO
+            {
+                esquerda_caixa.topo = i;// cercar por cima
+                // cercar por baixo
+            }
+        }
+    }
+
+    // ============================================================================== //
+    // Cercando bola da direita
+
+    for (j = 0; j < img->largura; j++) // percorrer a matriz (coluna por coluna) É A BOLA DA DIREITA
+    {
+        for (i = 0; i < img->altura; i++)
+        {
+            if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O EXTREMO
+            {                                                                                                                 // ESQUERDO DA BOLA
+                direita_caixa.esquerda = j; // cercar pela esquerda
+                // cercar pela direita
+            }
+        }
+    }
+    
+    for (i = 0; i < img->altura; i++) // percorrer a matriz (linha por linha)
+    {
+        for (j = 0; j < img->largura; j++)
+        {
+            if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O TOPO
+            {
+                direita_caixa.topo = i; // cercar por cima
+                // cercar por baixo
+            }
+        }
+    }
+
+    // ============================================================================== //
+    // Setando coordenadas dos centros
+
+    l->x = (esquerda_caixa.direita + esquerda_caixa.esquerda) / 2;
+    l->y = (esquerda_caixa.fundo + esquerda_caixa.topo) / 2;
+
+    r->x = (direita_caixa.direita + direita_caixa.esquerda) / 2;
+    r->y = (direita_caixa.fundo + direita_caixa.topo) / 2;
+
+    // ============================================================================== //
 
     for (i = 0; i < img->altura; i++)
         free(matriz_rotulada[i]);
