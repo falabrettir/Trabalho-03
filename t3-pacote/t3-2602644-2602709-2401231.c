@@ -21,15 +21,36 @@ typedef struct
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r);
 void diminuiRuido(Imagem1C* img);
 void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r);
-void rotulaMatriz(Imagem1C* img);
-//int menorRotulo(int a, int b, int c, int d);
+int** rotulaMatriz(Imagem1C* img);
+int menorRotulo(int a, int b, int c, int d);
 
 double detectaSensorBar(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    int i, j;
+    int i, j, k;
+    int** matriz_rotulada;
+    int conta_nums[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    diminuiRuido(img); 
-    // achaCentro(img, l, r);
+    diminuiRuido(img);
+    matriz_rotulada = rotulaMatriz(img);
+
+    for (i = 0; i < img->altura; i++)
+    {
+        for (j = 0; j < img->largura; j++)
+        {
+            if (matriz_rotulada[i][j])
+                printf("\n\n ACHOU  %d  %d  %d\n\n", matriz_rotulada[i][j], i, j);
+        }
+    }
+
+    for (k = 1; k < 11; k++)
+    {
+        printf("%2d ", conta_nums[k]);
+    }
+
+    for (i = 0; i < img->altura; i++)
+        free(matriz_rotulada[i]);
+    free(matriz_rotulada);
+
     return 0;
 }
 
@@ -89,14 +110,14 @@ void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
 }
 
 
-void rotulaMatriz(Imagem1C* img)
+int** rotulaMatriz(Imagem1C* img)
 {
     int i, j, rotulo;
     int** matriz_rotulada;
 
     matriz_rotulada = (int**) malloc(sizeof(int*) * img->altura);
     for (i = 0; i < img->altura; i++)
-        matriz_rotulada[i] = (int) malloc(sizeof(int) * img->largura);
+        matriz_rotulada[i] = (int*) malloc(sizeof(int) * img->largura);
 
     for (i = 0; i < img->altura; i++)
     {
@@ -127,11 +148,31 @@ void rotulaMatriz(Imagem1C* img)
         {
             if (matriz_rotulada[i][j]) // quando achar um pixel rotulado
             {
-                if (1) 
-                    matriz_rotulada[i][j] = 1;
-                else
-                    matriz_rotulada[i][j] = rotulo++;
+                if (matriz_rotulada[i][j+1] || matriz_rotulada[i+1][j+1] || matriz_rotulada[i+1][j] || matriz_rotulada[i+1][j-1]) 
+                    matriz_rotulada[i][j] = menorRotulo(matriz_rotulada[i][j+1], matriz_rotulada[i+1][j+1], matriz_rotulada[i+1][j], matriz_rotulada[i+1][j-1]);
             }
         }
     }
+
+    return matriz_rotulada;
+}
+
+int menorRotulo(int a, int b, int c, int d)
+{
+    int menor, i;
+    int nums[] = {a, b, c, d};
+
+    for (i = 0; i < 4; i++)
+    {
+        if (nums[i])
+            menor = nums[i];
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        if (nums[i] && nums[i] <= menor)
+            menor = nums[i];
+    }
+
+    return menor;
 }
