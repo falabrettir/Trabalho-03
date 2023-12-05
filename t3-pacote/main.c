@@ -16,7 +16,7 @@
  * imagens, ent�o o offset precisa ser igual para todos. Entretanto, usaremos
  * um valor diferente na hora de testar os trabalhos de fato. */
 
-#define RANDOM_SEED_OFFSET 5
+#define RANDOM_SEED_OFFSET 11
 
 #define N_TESTES 1
 

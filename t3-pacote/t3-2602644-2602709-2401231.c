@@ -89,24 +89,7 @@ void diminuiRuido(Imagem1C* img)
 
 void achaCentro(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
-    int soma_x[LARG_MAX] = {0}, soma_y[ALT_MAX] = {0};
-    int i, j;
-
-    for (i = 0; i < img->altura; i++)
-    {
-        for (j = 0; j < img->largura; j++)
-        {
-            soma_y[i] += img->dados[i][j];
-        }
-    }
-    for (j = 0; j < img->largura; j++)
-    {
-        for (i = 0; i < img->altura; i++)
-        {
-            soma_x[j] += img->dados[i][j];
-        }
-    }
-    i = 0;
+    
 }
 
 
@@ -128,9 +111,9 @@ int** rotulaMatriz(Imagem1C* img)
     }
 
     rotulo = 1;
-    for (i = 0; i < img->altura; i++)
+    for (i = 1; i < img->altura; i++)
     {
-        for (j = 0; j < img->largura; j++)
+        for (j = 1; j < img->largura; j++)
         {
             if (img->dados[i][j]) // se tiver um pixel branco
             {
@@ -142,9 +125,9 @@ int** rotulaMatriz(Imagem1C* img)
         }
     }
 
-    for (i = img->altura - 1; i >= 0; i--)
+    for (i = img->altura - 2; i >= 0; i--)
     {
-        for (j = img->largura - 1; j >= 0; j--)
+        for (j = img->largura - 2; j >= 0; j--)
         {
             if (matriz_rotulada[i][j]) // quando achar um pixel rotulado
             {
@@ -163,16 +146,12 @@ int menorRotulo(int a, int b, int c, int d)
     int nums[] = {a, b, c, d};
 
     for (i = 0; i < 4; i++)
-    {
         if (nums[i])
             menor = nums[i];
-    }
-
+    
     for (i = 0; i < 4; i++)
-    {
         if (nums[i] && nums[i] <= menor)
             menor = nums[i];
-    }
 
     return menor;
 }
