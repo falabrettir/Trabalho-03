@@ -12,7 +12,7 @@ typedef struct
 {
     int esquerda;
     int direita;
-    int fundo;
+    int baixo;
     int topo;
 } Caixa;
 
@@ -65,7 +65,7 @@ void diminuiRuido(Imagem1C* img)
     {
         for (j = 0; j < img->largura; j++)
         {
-            if (i<2 || j<2 || i >= img->altura-2 || j >= img->largura-2) // tirando o ruído das bordas
+            if (i<3 || j<3 || i >= img->altura-3 || j >= img->largura-3) // tirando o ruído das bordas
                 img->dados[i][j] = 0;
             else
                 img->dados[i][j] = copia[i][j];
@@ -80,7 +80,7 @@ void diminuiRuido(Imagem1C* img)
 void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
 {
     int **matriz_rotulada;
-    int i, j, rotulo;
+    int i, j, rotulo, achou;
     Caixa esquerda_caixa, direita_caixa;
 
     diminuiRuido(img);
@@ -90,27 +90,55 @@ void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
     // ============================================================================== //
     // Cercando bola da esquerda
 
-    for (j = 0; j < img->largura; j++) // percorrer a matriz procurando objeto (coluna por coluna)
+    achou = 0;
+    for (j = 0; j < img->largura && !achou; j++) // percorrer a matriz procurando objeto (coluna por coluna)
     {
-        for (i = 0; i < img->altura; i++)
+        for (i = 0; i < img->altura && !achou; i++)
         {
             if (matriz_rotulada[i][j]) // guardar o rotulo do objeto encontrado ACHOU O PONTO MAIS À ESQUERDA
             {
                 rotulo = matriz_rotulada[i][j];
                 esquerda_caixa.esquerda = j; // cercar pela esquerda
-                // cercar pela direita
+                achou = 1;
             }
         }
     }
-    
-    for (i = 0; i < img->altura; i++) // percorrer a matriz (linha por linha)
+
+    achou = 0;
+    for (j = img->largura - 1; j >= 0 && !achou; j--) // percorrer a matriz procurando objeto (coluna por coluna)
     {
-        for (j = 0; j < img->largura; j++)
+        for (i = 0; i < img->altura && !achou; i++)
+        {
+            if (matriz_rotulada[i][j] == rotulo) // guardar o rotulo do objeto encontrado ACHOU O PONTO MAIS À DIREITA 
+            {
+                esquerda_caixa.direita = j; // cercar pela direita
+                achou = 1;
+            }
+        }
+    }
+
+    achou = 0;
+    for (i = 0; i < img->altura && !achou; i++) // percorrer a matriz (linha por linha)
+    {
+        for (j = esquerda_caixa.esquerda; j < esquerda_caixa.direita && !achou; j++)
         {
             if (matriz_rotulada[i][j] == rotulo) // procurando objeto com rótulo armazenado ACHOU O TOPO
             {
                 esquerda_caixa.topo = i;// cercar por cima
-                // cercar por baixo
+                achou = 1;
+            }
+        }
+    }
+
+    achou = 0;
+    for (i = img->altura - 1; i > esquerda_caixa.topo && !achou; i--) // percorrer a matriz (linha por linha)
+    {
+        for (j = esquerda_caixa.esquerda; j < esquerda_caixa.direita && !achou; j++)
+        {
+            if (matriz_rotulada[i][j] == rotulo) // procurando objeto com rótulo armazenado ACHOU O baixo
+            {
+                esquerda_caixa.baixo = i;// cercar por baixo
+                achou = 1;
             }
         }
     }
@@ -118,26 +146,54 @@ void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
     // ============================================================================== //
     // Cercando bola da direita
 
-    for (j = 0; j < img->largura; j++) // percorrer a matriz (coluna por coluna) É A BOLA DA DIREITA
+    achou = 0;
+    for (j = 0; j < img->largura && !achou; j++) // percorrer a matriz (coluna por coluna) É A BOLA DA DIREITA
     {
         for (i = 0; i < img->altura; i++)
         {
             if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O EXTREMO
             {                                                                                                                 // ESQUERDO DA BOLA
                 direita_caixa.esquerda = j; // cercar pela esquerda
-                // cercar pela direita
+                achou = 1;
             }
         }
     }
-    
+
+    achou = 0;
+    for (j = img->largura - 1; j > direita_caixa.esquerda && !achou; j--) // percorrer a matriz (coluna por coluna) É A BOLA DA DIREITA
+    {
+        for (i = 0; i < img->altura; i++)
+        {
+            if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O EXTREMO
+            {                                                                                                                 // ESQUERDO DA BOLA
+                direita_caixa.direita = j; // cercar pela esquerda
+                achou = 1;
+            }
+        }
+    }
+
+    achou = 0;
     for (i = 0; i < img->altura; i++) // percorrer a matriz (linha por linha)
     {
-        for (j = 0; j < img->largura; j++)
+        for (j = direita_caixa.esquerda; j < direita_caixa.direita; j++)
         {
             if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O TOPO
             {
                 direita_caixa.topo = i; // cercar por cima
-                // cercar por baixo
+                achou = 1;
+            }
+        }
+    }
+
+    achou = 0;
+    for (i = img->altura - 1; i > direita_caixa.topo; i--) // percorrer a matriz (linha por linha)
+    {
+        for (j = direita_caixa.esquerda; j < direita_caixa.direita; j++)
+        {
+            if (matriz_rotulada[i][j] && matriz_rotulada[i][j] != rotulo) // procurando objeto com rótulo diferente do armazenado ACHOU O TOPO
+            {
+                direita_caixa.baixo = i; // cercar por cima
+                achou = 1;
             }
         }
     }
@@ -146,10 +202,10 @@ void achaCentros(Imagem1C* img, Coordenada* l, Coordenada* r)
     // Setando coordenadas dos centros
 
     l->x = (esquerda_caixa.direita + esquerda_caixa.esquerda) / 2;
-    l->y = (esquerda_caixa.fundo + esquerda_caixa.topo) / 2;
+    l->y = (esquerda_caixa.baixo + esquerda_caixa.topo) / 2;
 
     r->x = (direita_caixa.direita + direita_caixa.esquerda) / 2;
-    r->y = (direita_caixa.fundo + direita_caixa.topo) / 2;
+    r->y = (direita_caixa.baixo + direita_caixa.topo) / 2;
 
     // ============================================================================== //
 
@@ -211,12 +267,22 @@ int menorRotulo(int a, int b, int c, int d)
     int nums[] = {a, b, c, d};
 
     for (i = 0; i < 4; i++)
+    {
         if (nums[i])
+        {
             menor = nums[i];
+            i = 4;
+        }
+    }
     
     for (i = 0; i < 4; i++)
+    {
         if (nums[i] && nums[i] <= menor)
+        {
             menor = nums[i];
+            i = 4;
+        }
+    }
 
     return menor;
 }
