@@ -1,8 +1,9 @@
 #include "trabalho3.h"
 #include "imagem.h"
 #include <stdlib.h>
-#include<math.h>
+#include <math.h>
 
+#define PI 3.14159265358979323846
 #define CINZA 120
 
 // ============================================================================== //
@@ -45,22 +46,23 @@ void diminuiRuido(Imagem1C* img)
     for (i = 0; i < img->altura; i++)
         copia[i] = (unsigned char*) malloc(sizeof(unsigned char) * img->largura);
 
-    for (i = 1; i < img->altura - 1; i++)
+    for (i = 2; i < img->altura - 3; i++)
     {
-        for (j = 1; j < img->largura - 1; j++)
+        for (j = 2; j < img->largura - 3; j++)
         {
-            soma = img->dados[i][j+1]*20 + img->dados[i][j-1]*20 + img->dados[i+1][j]*20 + img->dados[i-1][j]*20 + img->dados[i][j]*30 + 
-                   img->dados[i+1][j-1]*10 + img->dados[i+1][j+1]*10 + img->dados[i-1][j-1]*10 + img->dados[i-1][j+1]*10;
+            soma = (int) (img->dados[i-2][j-2]*0.003 + img->dados[i-2][j-1]*0.013 + img->dados[i-2][j]*0.022 + img->dados[i-2][j+1]*0.013 + img->dados[i-2][j+2]*0.003 +
+                          img->dados[i-1][j-2]*0.013 + img->dados[i-1][j-1]*0.060 + img->dados[i-1][j]*0.098 + img->dados[i-1][j+1]*0.060 + img->dados[i-1][j+2]*0.013 +  
+                          img->dados[i][j-2]*0.022 + img->dados[i][j-1]*0.098 + img->dados[i][j]*0.162 + img->dados[i][j+1]*0.098 + img->dados[i][j+2]*0.022 +
+                          img->dados[i+1][j-2]*0.013 + img->dados[i+1][j-1]*0.060 + img->dados[i+1][j]*0.098 + img->dados[i+1][j+1]*0.060 + img->dados[i+1][j+2]*0.013 + 
+                          img->dados[i+2][j-2]*0.003 + img->dados[i+2][j-1]*0.013 + img->dados[i+2][j]*0.022 + img->dados[i+2][j+1]*0.013 + img->dados[i+2][j+2]*0.003);            
 
-            media = soma/150;
-
-            if(media < CINZA)
+            if(soma < CINZA)
                 copia[i][j] = 0;
             else
                 copia[i][j] = 255;
         }
     }
-
+    
     for (i = 0; i < img->altura; i++)
     {
         for (j = 0; j < img->largura; j++)
@@ -291,7 +293,7 @@ int menorRotulo(int a, int b, int c, int d)
 double calculaAngulo(Coordenada* coord1, Coordenada* coord2)
 {
     if(coord1->x == coord2->x)
-        return 0.0;
+        return PI/2;
     else
         return atan((coord1->y - coord2->y)/(coord1->x - coord2->x));
 }
