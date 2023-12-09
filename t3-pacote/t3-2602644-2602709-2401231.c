@@ -290,12 +290,33 @@ int menorRotulo(int a, int b, int c, int d)
     return menor;
 }
 
-double calculaAngulo(Coordenada* coord1, Coordenada* coord2)
+double calculaAngulo(Coordenada* l, Coordenada* r)
 {
-    if(coord1->x == coord2->x)
-        return PI/2;
-    else
-        return atan((coord1->y - coord2->y)/(coord1->x - coord2->x));
+    float co, ca;
+    float tan;
+    
+        if (l->y < r->y) // Bola da esquerda acima
+        {
+            if (l->x == r->x)
+                return PI/2;
+            
+            ca = r->x - l->x;
+            co = r->y - l->y;
+            
+            return atan(co/ca);
+        }
+            
+        else if (l->y > r->y) // Bola da direita acima
+        {
+            if (l->x == r->x)
+                return -PI/2;
+            
+            ca = r->x - l->x;
+            co = l->y - r->y;
+            
+            return -atan(co/ca);
+        }
+    return 0;
 }
 
 // ============================================================================== //
