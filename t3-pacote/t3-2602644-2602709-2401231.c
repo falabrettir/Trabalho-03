@@ -293,7 +293,6 @@ int menorRotulo(int a, int b, int c, int d)
 double calculaAngulo(Coordenada* l, Coordenada* r)
 {
     float co, ca;
-    float tan;
     
         if (l->y < r->y) // Bola da esquerda acima
         {
