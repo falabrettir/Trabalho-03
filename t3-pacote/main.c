@@ -18,7 +18,7 @@
 
 #define RANDOM_SEED_OFFSET 0
 
-#define N_TESTES 0
+#define N_TESTES 1
 
 #define SALVA_INTERMEDIARIOS 0 /* Flag que diz se devemos salvar as imagens de teste. Desative se for rodar muitos testes! */
 
@@ -57,26 +57,19 @@ int main ()
         }
         diagonal = sqrt (img->altura*img->altura + img->largura*img->largura);
 
-        /* Salva (se necess�rio). 
-        if (SALVA_INTERMEDIARIOS)
-        {
-            char foostring [64];
-            sprintf (foostring, "teste%d.bmp", i);
-            salvaImagem1C (img, foostring);
-        }*/
-
-        /* Invoca o testador. */
-        tempo_inicio = clock ();
-        angulo_medido = detectaSensorBar (img, &l_medido, &r_medido);
-        tempo_total += clock () - tempo_inicio;
-
-        /* Salva (se necess�rio). */
+        // Salva (se necess�rio). 
         if (SALVA_INTERMEDIARIOS)
         {
             char foostring [64];
             sprintf (foostring, "teste%d.bmp", i);
             salvaImagem1C (img, foostring);
         }
+
+        /* Invoca o testador. */
+        tempo_inicio = clock ();
+        angulo_medido = detectaSensorBar (img, &l_medido, &r_medido);
+        tempo_total += clock () - tempo_inicio;
+
 
         /* Compara os resultados com o que foi gerado. */
         erro_l = sqrt ((l_real.x-l_medido.x)*(l_real.x-l_medido.x) + (l_real.y-l_medido.y)*(l_real.y-l_medido.y));
